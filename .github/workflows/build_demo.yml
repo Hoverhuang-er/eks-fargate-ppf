@@ -1,0 +1,21 @@
+name: Build Ruby sample program to Pyroscope with Docker
+on:
+  push:
+    branches:
+      - 'main'
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Plan EKS Cluster with terraform
+        uses: docker/terraform-plan-action@v1
+      - name: Build Ruby Sample program within Pyroscope
+        uses: docker/build-push-action@v2
+        with:
+          file: Dockerfile
+          push: true
+          tags: 'cdfng/${{ secrets.DOCKER_REPO_NAME }}:latest'
